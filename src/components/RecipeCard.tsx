@@ -9,7 +9,7 @@ type Props = {
 const RecipeCard = ({ recipe }: Props) => {
 	return (
 		<Link
-			to={`/recipes/${recipe.id}`}
+			to={`/recipe/${recipe.id}`}
 			className="group block bg-white rounded-lg overflow-hidden shadow-md transition-shadow duration-300"
 		>
 			<div className="relative h-48 overflow-hidden">
