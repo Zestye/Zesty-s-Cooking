@@ -1,14 +1,9 @@
-import React, { useEffect, useState } from "react";
-import { Search, ArrowRight, Star } from "lucide-react";
-import Navbar from "../components/Navbar";
-
-type Recipe = {
-	id: number;
-	name: string;
-	image: string;
-	rating: number;
-	cookTimeMinutes: number;
-};
+import { useEffect, useState } from "react";
+import { ArrowRight } from "lucide-react";
+import { Link } from "react-router";
+import RecipeCard from "../components/RecipeCard";
+import type { Recipe } from "..";
+import { api } from "../utils/api";
 
 export default function ZestysCookingHomepage() {
 	const [recipes, setRecipes] = useState<Recipe[]>([]);
@@ -17,14 +12,11 @@ export default function ZestysCookingHomepage() {
 	useEffect(() => {
 		const fetchRecipes = async () => {
 			try {
-				const response = await fetch("https://dummyjson.com/recipes");
-				const data = await response.json();
+				const topRated = await api.get("/recipes", {
+					params: { limit: 6, sortBy: "rating", order: "desc" },
+				});
 
-				const topRated = data.recipes
-					.sort((a: Recipe, b: Recipe) => b.rating - a.rating)
-					.slice(0, 6);
-
-				setRecipes(topRated);
+				setRecipes(topRated.data.recipes);
 			} catch (error) {
 				console.error("Erreur lors du chargement des recettes :", error);
 			} finally {
@@ -37,48 +29,37 @@ export default function ZestysCookingHomepage() {
 
 	return (
 		<main className="min-h-screen bg-white text-slate-900">
-			<section
-				className="mx-auto mt-8 flex max-w-6xl flex-col items-start rounded-3xl px-6 py-20 text-white"
-				style={{
-					background: `linear-gradient(135deg, ${colors.yellow} 0%, ${colors.orange} 100%)`,
-				}}
-			>
-				<h2
-					className="max-w-2xl text-4xl font-bold leading-tight md:text-6xl"
-					style={{ color: colors.mirage }}
-				>
-					Découvre les recettes les mieux notées
-				</h2>
-				<p className="mt-6 max-w-2xl text-lg" style={{ color: colors.mirage }}>
-					Une page simple pour trouver rapidement les meilleures recettes.
-				</p>
-				<a
-					href="/recipes"
-					className="mt-8 inline-flex items-center gap-2 rounded-xl bg-white px-6 py-3 font-semibold shadow"
-					style={{ color: colors.mirage }}
-				>
-					Voir les recettes
-					<ArrowRight className="h-4 w-4" />
-				</a>
-				<div className="hidden md:block"></div>
+			<section className="mx-auto mt-8 flex max-w-6xl items-center justify-between rounded-3xl px-6 py-20 text-white bg-linear-to-br from-yellow to-orange">
+				<div className="flex flex-col items-start">
+					<h2 className="max-w-2xl text-4xl font-bold leading-tight md:text-6xl text-mirage">
+						Découvre les recettes les mieux notées
+					</h2>
+					<p className="mt-6 max-w-2xl text-lg text-mirage">
+						Une page simple pour trouver rapidement les meilleures recettes.
+					</p>
+					<Link
+						to="/recipes"
+						className="mt-8 inline-flex items-center gap-2 rounded-xl bg-white px-6 py-3 font-semibold shadow text-mirage"
+					>
+						Voir les recettes
+						<ArrowRight className="h-4 w-4" />
+					</Link>
+				</div>
 				<img
 					src="Zesty's Cooking.png"
 					alt="logo"
-					className="w-60 object-contain"
+					className="w-60 object-contain hidden md:block"
 				/>
 			</section>
 			<section className="mx-auto max-w-6xl px-6 py-16">
 				<div className="mb-8 flex items-center justify-between">
-					<h3 className="text-3xl font-bold" style={{ color: colors.mirage }}>
+					<h3 className="text-3xl font-bold text-mirage">
 						Meilleures recettes
 					</h3>
-					<a
-						href="/recipes"
-						className="font-medium"
-						style={{ color: colors.orange }}
-					>
+					<Link to="/recipes" className="font-medium text-orange">
 						Voir tout
-					</a>
+						<ArrowRight className="h-4 w-4 inline-block ml-1" />
+					</Link>
 				</div>
 
 				{loading ? (
@@ -86,41 +67,11 @@ export default function ZestysCookingHomepage() {
 				) : (
 					<div className="grid gap-6 md:grid-cols-3">
 						{recipes.map((recipe) => (
-							<article
-								key={recipe.id}
-								className="overflow-hidden rounded-2xl border bg-white shadow-sm"
-							>
-								<img
-									src={recipe.image}
-									alt={recipe.name}
-									className="h-56 w-full object-cover"
-								/>
-								<div className="p-5">
-									<div className="mb-2 flex items-center gap-2">
-										<Star className="h-4 w-4 fill-current text-yellow-500" />
-										<span className="text-sm font-medium text-slate-700">
-											{recipe.rating}/5
-										</span>
-									</div>
-									<h4
-										className="text-xl font-semibold"
-										style={{ color: colors.mirage }}
-									>
-										{recipe.name}
-									</h4>
-									<p className="mt-2 text-sm text-slate-600">
-										Temps de cuisson : {recipe.cookTimeMinutes} min
-									</p>
-								</div>
-							</article>
+							<RecipeCard key={recipe.id} recipe={recipe} />
 						))}
 					</div>
 				)}
 			</section>
-
-			<footer className="mt-10" style={{ backgroundColor: colors.mirage }}>
-				<div className="mx-auto flex max-w-6xl flex-col items-center px-6 py-10 text-center text-white"></div>
-			</footer>
 		</main>
 	);
 }

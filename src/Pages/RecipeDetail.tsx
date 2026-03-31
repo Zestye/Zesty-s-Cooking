@@ -2,12 +2,14 @@ import { Link, useParams } from "react-router";
 import type { Recipe } from "..";
 import { useEffect, useState } from "react";
 import { fetchRecipeById } from "../utils/api";
+import { useFavorites } from "../hooks/useFavorites";
 import {
 	ArrowLeft,
 	Check,
 	ChefHat,
 	Clock,
 	Flame,
+	Heart,
 	Star,
 	Users,
 } from "lucide-react";
@@ -19,6 +21,7 @@ export default function RecipeDetail() {
 	const [checkedIngredients, setCheckedIngredients] = useState<Set<number>>(
 		new Set(),
 	);
+	const { isFavorite, toggleFavorite } = useFavorites();
 
 	useEffect(() => {
 		if (id) {
@@ -102,9 +105,20 @@ export default function RecipeDetail() {
 								{recipe.rating.toFixed(1)} ({recipe.reviewCount} reviews)
 							</div>
 						</div>
-						<h1 className="text-4xl md:text-5xl font-bold text-white mb-2">
-							{recipe.name}
-						</h1>
+						<div className="flex items-center gap-4 mb-2">
+							<h1 className="text-4xl md:text-5xl font-bold text-white">
+								{recipe.name}
+							</h1>
+							<button
+								onClick={() => toggleFavorite(recipe.id)}
+								className="shrink-0 bg-white/20 hover:bg-white/30 rounded-full p-2.5 transition-colors"
+								aria-label={isFavorite(recipe.id) ? "Retirer des favoris" : "Ajouter aux favoris"}
+							>
+								<Heart
+									className={`h-6 w-6 ${isFavorite(recipe.id) ? "fill-red-500 text-red-500" : "text-white"}`}
+								/>
+							</button>
+						</div>
 						<div className="flex flex-wrap gap-2">
 							{recipe.mealType.map((type: string) => (
 								<span key={type} className="text-sm text-orange-200">

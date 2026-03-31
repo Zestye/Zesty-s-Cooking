@@ -1,12 +1,15 @@
 import type { Recipe } from "..";
-import { ChefHat, Clock, Star, Users } from "lucide-react";
+import { ChefHat, Clock, Heart, Star, Users } from "lucide-react";
 import { Link } from "react-router";
+import { useFavorites } from "../hooks/useFavorites";
 
 type Props = {
 	recipe: Recipe;
 };
 
 const RecipeCard = ({ recipe }: Props) => {
+	const { isFavorite, toggleFavorite } = useFavorites();
+
 	return (
 		<Link
 			to={`/recipe/${recipe.id}`}
@@ -25,6 +28,18 @@ const RecipeCard = ({ recipe }: Props) => {
 					<Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
 					{recipe.rating.toFixed(1)}
 				</div>
+				<button
+					onClick={(e) => {
+						e.preventDefault();
+						toggleFavorite(recipe.id);
+					}}
+					className="absolute bottom-2 right-2 bg-white/90 rounded-full p-1.5 shadow"
+					aria-label={isFavorite(recipe.id) ? "Retirer des favoris" : "Ajouter aux favoris"}
+				>
+					<Heart
+						className={`h-4 w-4 ${isFavorite(recipe.id) ? "fill-red-500 text-red-500" : "text-gray-400"}`}
+					/>
+				</button>
 			</div>
 
 			<div className="p-4">
