@@ -44,11 +44,11 @@ export default function ZestysCookingHomepage() {
 
   return (
     <main className="min-h-screen bg-white text-slate-900">
-      <header className="border-b bg-white">
+      <header className="border-b fixed top-0 left-0 w-full z-10 bg-white">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
           <a href="/" className="flex items-center gap-3">
             <img
-              src="/Zesty's Cooking .png"
+              src="Zesty's Cooking.png"
               alt="Logo Zesty's Cooking"
               className="h-12 w-12 object-contain"
             />
@@ -88,6 +88,13 @@ export default function ZestysCookingHomepage() {
           Voir les recettes
           <ArrowRight className="h-4 w-4" />
         </a>
+        <div className="hidden md:block">
+          </div>
+    <img
+      src="Zesty's Cooking.png"
+      alt="logo"
+      className="w-60 object-contain"
+    />
       </section>
       <section className="mx-auto max-w-6xl px-6 py-16">
         <div className="mb-8 flex items-center justify-between">
@@ -126,11 +133,6 @@ export default function ZestysCookingHomepage() {
 
         <footer className="mt-10" style={{ backgroundColor: colors.mirage }}>
         <div className="mx-auto flex max-w-6xl flex-col items-center px-6 py-10 text-center text-white">
-          <img
-            src="/Zesty's cooking .png"
-            alt="Logo Zesty's Cooking"
-            className="h-12 w-12 object-contain"
-          />
         </div>
       </footer>
     </main>
