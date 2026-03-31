@@ -12,7 +12,7 @@ import {
 	Users,
 } from "lucide-react";
 
-export function RecipeDetail() {
+export default function RecipeDetail() {
 	const { id } = useParams();
 	const [recipe, setRecipe] = useState<Recipe | null>(null);
 	const [loading, setLoading] = useState(true);

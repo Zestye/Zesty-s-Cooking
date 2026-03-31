@@ -1,6 +1,10 @@
 @import "tailwindcss";
 
 @theme inline {
+	--color-mirage: var(--mirage);
+	--color-orange: var(--orange);
+	--color-yellow: var(--yellow);
+	--color-cream: var(--cream);
 	--color-background: var(--background);
 	--color-foreground: var(--foreground);
 	--font-sans: var(--font-geist-sans);
@@ -44,6 +48,10 @@
 }
 
 :root {
+	--mirage: oklab(20.992% -0.0039 -0.03394);
+	--orange: oklab(77.172% 0.06662 0.12783);
+	--yellow: oklab(85.955% 0.00136 0.13929);
+	--cream: oklab(97.251% 0.00678 0.01853);
 	--radius: 0.625rem;
 	--background: oklch(1 0 0);
 	--foreground: oklch(0.145 0 0);
